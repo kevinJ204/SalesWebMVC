@@ -8,11 +8,14 @@ namespace SalesWebMVC
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContext<SalesWebMVCContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("SalesWebMVCContext") ?? throw new InvalidOperationException("Connection string 'SalesWebMVCContext' not found.")));
-
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            var connectionString = builder.Configuration.GetConnectionString("SalesWebMVCContext");
+            builder.Services.AddDbContext<SalesWebMVCContext>(options =>
+                {
+                    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+                });
 
             var app = builder.Build();
 
