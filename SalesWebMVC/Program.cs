@@ -34,12 +34,10 @@ namespace SalesWebMVC
             }
             else
             {
-                using (var scope = app.Services.CreateScope())
-                {
-                    var serviceProvider = scope.ServiceProvider;
-                    var sS = serviceProvider.GetRequiredService<SeedingService>();
-                    sS.Seed();
-                }
+                using var scope = app.Services.CreateScope();
+                var serviceProvider = scope.ServiceProvider;
+                var sS = serviceProvider.GetRequiredService<SeedingService>();
+                sS.Seed();
             }
 
             app.UseHttpsRedirection();
