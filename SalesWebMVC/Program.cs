@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMVC.Data;
 using SalesWebMVC.Services;
+using System.Globalization;
 
 namespace SalesWebMVC
 {
@@ -39,6 +41,16 @@ namespace SalesWebMVC
                 var sS = serviceProvider.GetRequiredService<SeedingService>();
                 sS.Seed();
             }
+
+            var enUS = new CultureInfo("en-US");
+            var LocalizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(enUS),
+                SupportedCultures = new List<CultureInfo> { enUS },
+                SupportedUICultures = new List<CultureInfo> { enUS }
+            };
+
+            app.UseRequestLocalization(LocalizationOptions);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
